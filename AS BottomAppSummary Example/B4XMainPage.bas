@@ -34,17 +34,24 @@ End Sub
 Private Sub OpenSheet(DarkMode As Boolean)
 	BottomAppSummary.Initialize(Me,"BottomAppSummary",Root)
 	BottomAppSummary.Theme = IIf(DarkMode,BottomAppSummary.Theme_Dark,BottomAppSummary.Theme_Light)
-	BottomAppSummary.ActionButtonVisible = False
 
-	BottomAppSummary.SetTitleText("Welcome to"," Parcel ","!")
-	BottomAppSummary.AddItem("Supported worldwide","With more than 320 delivery agents supported, you can be sure that your next delivery will be tracked via Parcel.",BottomAppSummary.FontToBitmap(Chr(0xE894),True,35,BottomAppSummary.ItemIconProperties.Color),"")
-	BottomAppSummary.AddItem("Powerful functions","Daily payers, barcode scanners, card support and many other functions make tracking much easier.",BottomAppSummary.FontToBitmap(Chr(0xF02A),False,35,BottomAppSummary.ItemIconProperties.Color),"")
-	BottomAppSummary.AddItem("Push notifications","With a Premium subscription, receive push notifications when there is news about the delivery.",BottomAppSummary.FontToBitmap(Chr(0xE7F4),True,35,BottomAppSummary.ItemIconProperties.Color),"")
+'	BottomAppSummary.SetTitleText("Welcome to"," Parcel ","!")
+'	BottomAppSummary.AddItem("Supported worldwide","With more than 320 delivery agents supported, you can be sure that your next delivery will be tracked via Parcel.",BottomAppSummary.FontToBitmap(Chr(0xE894),True,35,BottomAppSummary.ItemIconProperties.Color),"")
+'	BottomAppSummary.AddItem("Powerful functions","Daily payers, barcode scanners, card support and many other functions make tracking much easier.",BottomAppSummary.FontToBitmap(Chr(0xF02A),False,35,BottomAppSummary.ItemIconProperties.Color),"")
+'	BottomAppSummary.AddItem("Push notifications","With a Premium subscription, receive push notifications when there is news about the delivery.",BottomAppSummary.FontToBitmap(Chr(0xE7F4),True,35,BottomAppSummary.ItemIconProperties.Color),"")
 
 	
-	BottomAppSummary.ShowPicker(500dip)
+	BottomAppSummary.AddImageItem(xui.LoadBitmap(File.DirAssets,"newfeature.png"),400dip,"")
+	BottomAppSummary.AddPlaceholder(10dip)
+	BottomAppSummary.AddTitleItem("Detailed Task Distribution Overview","")
+	BottomAppSummary.AddPlaceholder(10dip)
+	BottomAppSummary.AddDescriptionItem("Pie chart showing task distribution by category and time range for quick performance insights.","")
 	
-	BottomAppSummary.ConfirmButtonText = "Confirm"
+	
+	'BottomAppSummary.ShowPicker(500dip)
+	BottomAppSummary.ShowPicker(600dip)
+	
+	BottomAppSummary.ConfirmButtonText = "Continue"
 	
 End Sub
 

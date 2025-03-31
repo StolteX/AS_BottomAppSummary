@@ -12,6 +12,8 @@ V1.00
 
 #Event: ActionButtonClicked
 #Event: Close
+#Event: CustomDrawItem(Item As AS_AppSummary_Item,ItemViews As AS_AppSummary_ItemViews)
+#Event: ItemClicked(Item As AS_AppSummary_Item)
 
 Sub Class_Globals
 	
@@ -32,12 +34,10 @@ Sub Class_Globals
 	Private m_HeaderHeight As Float
 	Private m_HeaderColor As Int
 	Private m_BodyColor As Int
-	Private m_ActionButtonVisible As Boolean
 	Private m_DragIndicatorColor As Int
 	Private m_SheetWidth As Float = 0
-	Private m_MaxVisibleItems As Int = 5
 	
-	Type AS_BottomAppSummary_Theme(BodyColor As Int,TextColor As Int,DragIndicatorColor As Int,AppSummary As AS_AppSummary_Theme,ActionButtonBackgroundColor As Int,ActionButtonTextColor As Int)
+	Type AS_BottomAppSummary_Theme(BodyColor As Int,TextColor As Int,DragIndicatorColor As Int,AppSummary As AS_AppSummary_Theme)
 	
 End Sub
 
@@ -48,12 +48,9 @@ Public Sub getTheme_Light As AS_BottomAppSummary_Theme
 	Theme.BodyColor = xui.Color_White
 	Theme.TextColor = xui.Color_Black
 	Theme.DragIndicatorColor = xui.Color_Black
-	Theme.ActionButtonBackgroundColor = xui.Color_Black
-	Theme.ActionButtonTextColor = xui.Color_White
 
 	Dim AppSummary_Theme As AS_AppSummary_Theme = m_AppSummary.Theme_Light
-'	AppSummary_Theme.BackgroundColor = Theme.BodyColor
-'	AppSummary_Theme.Item_BackgroundColor = Theme.BodyColor
+	AppSummary_Theme.BackgroundColor = Theme.BodyColor
 	Theme.AppSummary = AppSummary_Theme
 
 	Return Theme
@@ -64,15 +61,12 @@ Public Sub getTheme_Dark As AS_BottomAppSummary_Theme
 	
 	Dim Theme As AS_BottomAppSummary_Theme
 	Theme.Initialize
-	Theme.BodyColor = xui.Color_ARGB(255,32, 33, 37)
+	Theme.BodyColor = xui.Color_ARGB(255,19, 20, 22)
 	Theme.TextColor = xui.Color_White
 	Theme.DragIndicatorColor = xui.Color_White
-	Theme.ActionButtonBackgroundColor = xui.Color_White
-	Theme.ActionButtonTextColor = xui.Color_Black
 
 	Dim AppSummary_Theme As AS_AppSummary_Theme = m_AppSummary.Theme_Dark
-'	AppSummary_Theme.BackgroundColor = Theme.BodyColor
-'	AppSummary_Theme.Item_BackgroundColor = Theme.BodyColor
+	AppSummary_Theme.BackgroundColor = Theme.BodyColor
 	Theme.AppSummary = AppSummary_Theme
 
 	Return Theme
@@ -84,8 +78,6 @@ Public Sub setTheme(Theme As AS_BottomAppSummary_Theme)
 	m_HeaderColor = Theme.BodyColor
 	m_BodyColor = Theme.BodyColor
 	m_DragIndicatorColor = Theme.DragIndicatorColor
-'	m_ActionButtonBackgroundColor = Theme.ActionButtonBackgroundColor
-'	m_ActionButtonTextColor = Theme.ActionButtonTextColor
 	setColor(m_BodyColor)
 	m_AppSummary.Theme = Theme.AppSummary
 End Sub
@@ -101,6 +93,7 @@ Public Sub Initialize(Callback As Object,EventName As String,Parent As B4XView)
 	xpnl_Body = xui.CreatePanel("")
 	xpnl_DragIndicator = xui.CreatePanel("")
 	xpnl_ItemsBackground = xui.CreatePanel("")
+	xpnl_ItemsBackground.SetLayoutAnimated(0,0,0,100dip,100dip)
 	
 	m_AppSummary.Initialize(Me,"AppSummary")
 	m_AppSummary.CreateViewPerCode(xpnl_ItemsBackground,0,0,100dip,100dip)
@@ -112,11 +105,7 @@ Public Sub Initialize(Callback As Object,EventName As String,Parent As B4XView)
 	m_HeaderColor = xui.Color_ARGB(255,32, 33, 37)
 	m_BodyColor = xui.Color_ARGB(255,32, 33, 37)
 	
-'	m_ActionButtonBackgroundColor = xui.Color_White
-'	m_ActionButtonTextColor = xui.Color_Black
-	
 	m_HeaderHeight = 30dip
-	m_ActionButtonVisible = False
 
 End Sub
 
@@ -150,9 +139,9 @@ Public Sub ShowPicker(BodyHeight As Float)
 	
 	Dim SafeAreaHeight As Float = 0
 	
-	If m_ActionButtonVisible Then
+	'If m_ActionButtonVisible Then
 		BodyHeight = BodyHeight + 50dip
-	End If
+	'End If
 	
 	#If B4I
 	SafeAreaHeight = B4XPages.GetNativeParent(B4XPages.MainPage).SafeAreaInsets.Bottom
@@ -180,7 +169,7 @@ Public Sub ShowPicker(BodyHeight As Float)
 	BottomCard.CornerRadius_Header = 30dip/2
 	
 	xpnl_ItemsBackground.RemoveViewFromParent
-	xpnl_Body.AddView(xpnl_ItemsBackground,0,0,xpnl_Body.Width,BodyHeight)
+	xpnl_Body.AddView(xpnl_ItemsBackground,0,0,xpnl_Body.Width,BodyHeight - SafeAreaHeight)
 	m_AppSummary.Base_Resize(xpnl_ItemsBackground.Width,xpnl_ItemsBackground.Height)
 	m_AppSummary.Refresh
 	
@@ -207,16 +196,6 @@ End Sub
 
 Public Sub getThemeChangeTransition As String
 	Return m_AppSummary.ThemeChangeTransition
-End Sub
-
-'The maximum number of items that are visible before it becomes a list and must be scrolled
-'Default: 5
-Public Sub setMaxVisibleItems(MaxVisibleItems As Int)
-	m_MaxVisibleItems = MaxVisibleItems
-End Sub
-
-Public Sub getMaxVisibleItems As Int
-	Return m_MaxVisibleItems
 End Sub
 
 Public Sub getAppSummary As AS_AppSummary
@@ -258,20 +237,15 @@ Public Sub setConfirmButtonText(ConfirmButtonText As String)
 	m_AppSummary.ConfirmButtonText = ConfirmButtonText
 End Sub
 
-Public Sub getActionButtonVisible As Boolean
-	Return m_ActionButtonVisible
-End Sub
-
-Public Sub setActionButtonVisible(Visible As Boolean)
-	m_ActionButtonVisible = Visible
-End Sub
-
 #End Region
 
 #Region Events
 
 Private Sub AppSummary_ConfirmButtonClick
-	ActionButtonClicked
+	XUIViewsUtils.PerformHapticFeedback(xpnl_ItemsBackground)
+	If xui.SubExists(mCallBack, mEventName & "_ActionButtonClicked",0) Then
+		CallSub(mCallBack, mEventName & "_ActionButtonClicked")
+	End If
 End Sub
 
 Private Sub BottomCard_Close
@@ -280,20 +254,15 @@ Private Sub BottomCard_Close
 	End If
 End Sub
 
-#If B4J
-Private Sub xlbl_ActionButton_MouseClicked (EventData As MouseEvent)
-	ActionButtonClicked
+Private Sub AppSummary_CustomDrawItem(Item As AS_AppSummary_Item,ItemViews As AS_AppSummary_ItemViews)
+	If xui.SubExists(mCallBack, mEventName & "_CustomDrawItem",2) Then
+		CallSub3(mCallBack, mEventName & "_CustomDrawItem",Item,ItemViews)
+	End If
 End Sub
-#Else
-Private Sub xlbl_ActionButton_Click
-	ActionButtonClicked
-End Sub
-#End If
 
-Private Sub ActionButtonClicked
-	XUIViewsUtils.PerformHapticFeedback(xpnl_ItemsBackground)
-	If xui.SubExists(mCallBack, mEventName & "_ActionButtonClicked",0) Then
-		CallSub(mCallBack, mEventName & "_ActionButtonClicked")
+Private Sub AppSummary_ItemClicked(Item As AS_AppSummary_Item)
+	If xui.SubExists(mCallBack, mEventName & "_ItemClicked",1) Then
+		CallSub2(mCallBack, mEventName & "_ItemClicked",Item)
 	End If
 End Sub
 

@@ -1,12 +1,15 @@
 ﻿ModuleBookmarks0=
 ModuleBookmarks1=
 ModuleBookmarks2=
+ModuleBookmarks3=
 ModuleBreakpoints0=
 ModuleBreakpoints1=
 ModuleBreakpoints2=
+ModuleBreakpoints3=
 ModuleClosedNodes0=4
 ModuleClosedNodes1=
 ModuleClosedNodes2=
-NavigationStack=AS_BottomSelectionList,Initialize,118,0,AS_BottomSelectionList,getTheme_Light,48,0,B4XMainPage,OpenSheet,31,6,AS_BottomSelectionList,setShowSeperators,230,0,AS_BottomSelectionList,getSelectionIconAlignment,226,0,AS_BottomSelectionList,Class_Globals,51,0,AS_BottomSelectionList,setSelectionIconAlignment,225,0,AS_BottomSelectionList,setSideGap,221,4,AS_BottomSelectionList,getSideGap,225,2,AS_BottomSelectionList,HidePicker,216,0,AS_BottomSelectionList,ShowPicker,210,0
+ModuleClosedNodes3=
+NavigationStack=AS_BottomAppSummary,Initialize,102,0,AS_BottomAppSummary,setConfirmButtonText,242,0,AS_AppSummary,Class_Globals,97,0,AS_AppSummary,setTitleTextColor,736,0,AS_BottomAppSummary,ShowPicker,139,0,AS_BottomAppSummary,getThemeChangeTransition,192,0,AS_BottomAppSummary,Class_Globals,28,0,B4XMainPage,Initialize,17,0,B4XMainPage,OpenSheet,27,0,B4XMainPage,B4XPage_Created,23,0
 SelectedBuild=0
-VisibleModules=2,1
+VisibleModules=3,2,1

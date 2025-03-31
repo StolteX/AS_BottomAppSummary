@@ -1,19 +1,23 @@
 ﻿Build1=Default,b4a.example
 File1=frm_main.bal
+File2=newfeature.png
 FileGroup1=Default Group
+FileGroup2=Default Group
 Group=Default Group
-Library1=asdraggablebottomcard
-Library2=b4xpages
-Library3=core
-Library4=xui views
-Library5=as_selectionlist
+Library1=as_selectionlist
+Library2=asdraggablebottomcard
+Library3=b4xpages
+Library4=core
+Library5=xui views
+Library6=byteconverter
 ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="33"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.DarkTheme)~\n~'End of default text.~\n~
-Module1=|relative|..\..\AS_BottomSelectionList
-Module2=|relative|..\B4XMainPage
-Module3=Starter
-NumberOfFiles=1
-NumberOfLibraries=5
-NumberOfModules=3
+Module1=|relative|..\..\..\AS_AppSummary\AS_AppSummary
+Module2=|relative|..\..\AS_BottomAppSummary
+Module3=|relative|..\B4XMainPage
+Module4=Starter
+NumberOfFiles=2
+NumberOfLibraries=6
+NumberOfModules=4
 Version=12.8
 @EndOfDesignText@
 #Region  Project Attributes 
